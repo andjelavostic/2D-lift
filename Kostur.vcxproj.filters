@@ -64,4 +64,12 @@
     </None>
     <None Include=".gitignore" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="C:\Users\Andjela\Downloads\opened.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="C:\Users\Andjela\Downloads\closed.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

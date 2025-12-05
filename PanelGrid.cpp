@@ -45,6 +45,8 @@ PanelGrid::PanelGrid(float left, float right, float bottom, float top,
 }
 
 void PanelGrid::draw(GLuint shader) {
+    glUseProgram(shader);
+    glUniform1i(glGetUniformLocation(shader, "useTexture"), 0);
     glUniform3f(glGetUniformLocation(shader, "uColor"), color[0], color[1], color[2]);
     glUniform2f(glGetUniformLocation(shader, "uOffset"), 0.0f, 0.0f);
     for (auto vao : VAOs) {

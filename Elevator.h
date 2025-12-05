@@ -24,11 +24,15 @@ private:
     float doorOpenTime;
     float doorDuration = 5.0f;
 
+    //Teksture
+    GLuint texClosed;
+    GLuint texOpened;
+
 public:
-    Elevator(int floors = 9, int startFloor = 2, float x0 = 0.75f, float width = 0.18f);
+    Elevator(int floors = 9, int startFloor = 2, float x0 = 0.75f, float width = 0.15f);
 
     void drawFloors(GLuint shader);
-    void drawLift(GLuint shader, bool doorsStatus);
+    void drawLift(GLuint shader);
 
     void callLift(int floor);         // Poziva lift na odredjeni sprat
     void updateLift();

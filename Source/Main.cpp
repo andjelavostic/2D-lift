@@ -63,11 +63,7 @@ int main()
     Person person(1, elevator.getFloorSpacing());
 
     
-    bool liftCalled = false;
     int targetFloor = 0;
-    bool doorsOpen = false;
-    float doorDuration = 5.0f;
-    float doorOpenTime = 0.0f;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -93,17 +89,13 @@ int main()
 
         elevator.updateLift();
 
-        // -------- Zatvaranje vrata --------
-        if (doorsOpen && (glfwGetTime() - doorOpenTime > doorDuration)) {
-            doorsOpen = false;
-        }
 
         // -------- Crtanje scene --------
         leftPanel.draw(shader);
         rightPanel.draw(shader);
         leftPanelButtons.draw(shader);
         elevator.drawFloors(shader);
-        elevator.drawLift(shader, doorsOpen);
+        elevator.drawLift(shader);
         person.draw(shader);
 
         glfwSwapBuffers(window);

@@ -28,6 +28,8 @@ Panel::Panel(float x0, float x1, float y0, float y1, float r, float g, float b) 
 }
 
 void Panel::draw(GLuint shader) {
+    glUseProgram(shader);
+    glUniform1i(glGetUniformLocation(shader, "useTexture"), 0);
     glUniform3f(glGetUniformLocation(shader, "uColor"), color[0], color[1], color[2]);
     glUniform2f(glGetUniformLocation(shader, "uOffset"), 0.0f, 0.0f);
     glBindVertexArray(VAO);

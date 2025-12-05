@@ -26,6 +26,8 @@ Person::Person(int startFloor, float floorSpacing, float w, float heightFactor, 
 }
 
 void Person::draw(GLuint shader) {
+    glUseProgram(shader);
+    glUniform1i(glGetUniformLocation(shader, "useTexture"), 0);
     GLuint offsetLoc = glGetUniformLocation(shader, "uOffset");
     glUniform2f(offsetLoc, posX, 0.0f);
     glUniform3f(glGetUniformLocation(shader, "uColor"), 0.0f, 0.0f, 1.0f);

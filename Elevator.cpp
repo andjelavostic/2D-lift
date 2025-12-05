@@ -2,7 +2,8 @@
 #include <GL/glew.h>
 #include <cmath>
 #include <GLFW/glfw3.h>
-
+#include "../2D-lift/Header/Util.h"
+#include <iostream>
 Elevator::Elevator(int floors, int startFloor, float x0, float width) {
     totalFloors = floors;
     floorSpacing = 2.0f / (totalFloors - 1);
@@ -32,23 +33,45 @@ Elevator::Elevator(int floors, int startFloor, float x0, float width) {
     liftY0 = -1.0f + startFloor * floorSpacing;
     liftY1 = liftY0 + liftHeight;
 
-    float liftVertices[] = { liftX0, liftY0, liftX1, liftY0, liftX1, liftY1, liftX0, liftY1 };
+    float liftVertices[] = {
+        // x, y, u, v
+        liftX0, liftY0, 0.0f, 0.0f, // donji-levo
+        liftX1, liftY0, 1.0f, 0.0f, // donji-desno
+        liftX1, liftY1, 1.0f, 1.0f, // gornji-desno
+        liftX0, liftY1, 0.0f, 1.0f  // gornji-levo
+    };
+
     glGenVertexArrays(1, &liftVAO);
     glGenBuffers(1, &liftVBO);
+
     glBindVertexArray(liftVAO);
     glBindBuffer(GL_ARRAY_BUFFER, liftVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(liftVertices), liftVertices, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(liftVertices), liftVertices, GL_DYNAMIC_DRAW);
+
+    // pozicija
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
+
+    // UV
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    glBindVertexArray(0);
+
 
     liftCalled = false;
     targetFloor = startFloor;
     doorsOpen = false;
     doorOpenTime = 0.0f;
     liftSpeed = 0.005f;
+
+    texClosed = loadImageToTexture("resources/closed.png");
+    texOpened = loadImageToTexture("resources/opened.png");
 }
 
 void Elevator::drawFloors(GLuint shader) {
+    glUseProgram(shader);
+    glUniform1i(glGetUniformLocation(shader, "useTexture"), 0);
     glUniform3f(glGetUniformLocation(shader, "uColor"), 1.0f, 1.0f, 1.0f);
     for (int i = 0; i < totalFloors; i++) {
         glBindVertexArray(floorVAOs[i]);
@@ -56,11 +79,17 @@ void Elevator::drawFloors(GLuint shader) {
     }
 }
 
-void Elevator::drawLift(GLuint shader, bool doorsStatus) {
-    glUniform3f(glGetUniformLocation(shader, "uColor"), 0.8f, 0.3f, 0.2f);
+void Elevator::drawLift(GLuint shader) {
+    GLuint texToUse = doorsOpen ? texOpened : texClosed;
+    glUseProgram(shader);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texToUse);
+    glUniform1i(glGetUniformLocation(shader, "uTexture"), 0);
+    glUniform1i(glGetUniformLocation(shader, "useTexture"), 1);
+
     glBindVertexArray(liftVAO);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-    doorsOpen = doorsStatus;
+
 }
 void Elevator::callLift(int floor) {
     targetFloor = floor;
@@ -74,21 +103,31 @@ void Elevator::updateLift() {
             liftY0 += (targetY > liftY0 ? liftSpeed : -liftSpeed);
             liftY1 = liftY0 + liftHeight;
 
-            float liftVertices[] = { liftX0, liftY0, liftX1, liftY0, liftX1, liftY1, liftX0, liftY1 };
+            // Ponovo kreiramo vertikale sa UV koordinatama
+            float liftVertices[] = {
+                liftX0, liftY0, 0.0f, 0.0f, // bottom-left
+                liftX1, liftY0, 1.0f, 0.0f, // bottom-right
+                liftX1, liftY1, 1.0f, 1.0f, // top-right
+                liftX0, liftY1, 0.0f, 1.0f  // top-left
+            };
+
             glBindBuffer(GL_ARRAY_BUFFER, liftVBO);
             glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(liftVertices), liftVertices);
+
         }
         else {
             liftY0 = targetY;
             liftY1 = liftY0 + liftHeight;
             liftFloor = targetFloor;
             liftCalled = false;
-            doorsOpen = true;
-            doorOpenTime = glfwGetTime();
+
+            doorsOpen = true;                  // otvaranje vrata
+            doorOpenTime = glfwGetTime();      // zapamti vreme otvaranja
         }
     }
 
-    if (doorsOpen && (glfwGetTime() - doorOpenTime > doorDuration)) {
+    // Zatvori vrata nakon 5 sekundi
+    if (doorsOpen && (glfwGetTime() - doorOpenTime > 5.0f)) {
         doorsOpen = false;
     }
 }
