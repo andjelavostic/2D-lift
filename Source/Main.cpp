@@ -36,6 +36,9 @@ int main()
         monitor,
         NULL
     );
+    // Sada su width i height
+    int windowWidth = mode->width;
+    int windowHeight = mode->height;
     if (window == NULL) return endProgram("Prozor nije uspeo da se kreira.");
     glfwMakeContextCurrent(window);
 
@@ -92,6 +95,32 @@ int main()
         elevator.updateLift();
         person.syncWithLift(elevator.getLiftY0(),elevator.getLiftFloor()); 
         
+        bool mouseDown = false;
+
+        // u render loop-u
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+            if (!mouseDown) { // ovo je prvi frame klika
+                double mouseX, mouseY;
+                glfwGetCursorPos(window, &mouseX, &mouseY);
+
+                float xNorm = (mouseX / windowWidth) * 2.0f - 1.0f;
+                float yNorm = 1.0f - (mouseY / windowHeight) * 2.0f;
+
+                leftPanelButtons.checkClick(xNorm, yNorm, person.isInsideLift());
+                mouseDown = true;
+                // 2. proveri klik
+                if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS) {
+                    leftPanelButtons.checkClick(xNorm, yNorm, person.isInsideLift());
+                }
+
+            }
+        }
+        else {
+            mouseDown = false; // reset kada pustiš taster
+        }
+       
+
+       
 
         // -------- Crtanje scene --------
         leftPanel.draw(shader);

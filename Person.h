@@ -12,7 +12,7 @@ private:
     unsigned texPerson;      // tekstura osobe
     bool facingRight = true;
     float u0 = 0.0f, u1 = 1.0f; // UV koordinate po X, za flip
-    bool isInsideLift = false;
+    bool insideLift = false;
 
 public:
     Person(int startFloor, float floorSpacing, float width = 0.1f, float heightFactor = 0.7f, float startX = 0.05f);
@@ -25,6 +25,6 @@ public:
     bool touchesLift(float liftX0);
     void syncWithLift(float liftY0, int liftFloor);
     float getRightX() { return x0 + posX + width; }
-
+    bool isInsideLift() { return insideLift; }
 
 };

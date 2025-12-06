@@ -30,6 +30,10 @@ PanelGrid::PanelGrid(float left, float right, float bottom, float top,
             float y1 = y0 + buttonHeight;
 
             buttons[idx].texture = loadImageToTexture(texturePaths[idx].c_str());
+            buttons[idx].x0 = x0;
+            buttons[idx].x1 = x1;
+            buttons[idx].y0 = y0;
+            buttons[idx].y1 = y1;
 
             float vertices[] = {
                 // x, y, u, v
@@ -68,18 +72,42 @@ PanelGrid::PanelGrid(float left, float right, float bottom, float top,
 
 void PanelGrid::draw(GLuint shader) {
     glUseProgram(shader);
-    glUniform1i(glGetUniformLocation(shader, "useTexture"), 1);
-    glUniform2f(glGetUniformLocation(shader, "uOffset"), 0.0f, 0.0f);
 
-    for (auto& b : buttons) {
+    for (int i = 0; i < buttons.size(); i++) {
+        ButtonGraphic& b = buttons[i];
+        ButtonState& state = floorButtons[i];
+
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, b.texture);
         glUniform1i(glGetUniformLocation(shader, "uTexture"), 0);
+        glUniform1i(glGetUniformLocation(shader, "useTexture"), 1);
+
+        // highlight uniform
+        glUniform1i(glGetUniformLocation(shader, "uHighlight"), state.highlight ? 1 : 0);
+        glUniform1f(glGetUniformLocation(shader, "highlightWidth"), 0.05f);
 
         glBindVertexArray(b.VAO);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     }
+}
+void PanelGrid::checkClick(float mouseX, float mouseY, bool inLift) {
+    if (!inLift) return; // ne dozvoljavaj klik ako osoba nije u liftu
 
+    // prolazimo kroz sva dugmad
+    for (int i = 0; i < buttons.size(); i++) {
+        ButtonGraphic& b = buttons[i];
+        ButtonState& state = floorButtons[i];
+
+        // provera da li je klik unutar pravougaonika dugmeta
+        if (mouseX >= b.x0 && mouseX <= b.x1 &&
+            mouseY >= b.y0 && mouseY <= b.y1) {
+            if (i >= 0 && i <= 7) {
+                state.highlight = true;
+            }// dugme se uokviruje / highlight-uje
+            state.pressed = true;   // opcionalno: dugme je pritisnuto
+            std::cout << "Dugme " << i << " kliknuto!" << std::endl;
+        }
+    }
 }
 
 PanelGrid::~PanelGrid() {

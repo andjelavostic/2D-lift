@@ -49,6 +49,7 @@ void Person::draw(GLuint shader) {
     GLuint offsetLoc = glGetUniformLocation(shader, "uOffset");
     glUniform2f(offsetLoc, posX, 0.0f);
 
+
     // update UV dinamicki
     float vertices[] = {
         x0, y0, u0, 0.0f,
@@ -63,13 +64,15 @@ void Person::draw(GLuint shader) {
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
     glUniform1i(glGetUniformLocation(shader, "useTexture"), 0); // vracamo boju za ostalo
+    glUniform1i(glGetUniformLocation(shader, "uHighlight"), 0);
+
 }
 
 void Person::moveLeft(float liftX0, bool doorsOpen)
 {
     posX -= personSpeed;
 
-    if (isInsideLift) {
+    if (insideLift) {
         // izlazak moguc samo kada su vrata otvorena
         float personLeft = x0 + posX;
         if (!doorsOpen) {
@@ -80,7 +83,7 @@ void Person::moveLeft(float liftX0, bool doorsOpen)
             // vrata otvorena  moze izaci
             if (personLeft < 0.0f) posX = 0.0f;
             if (personLeft < liftX0)
-                isInsideLift = false; // izasla je
+                insideLift = false; // izasla je
         }
     }
     else {
@@ -101,11 +104,11 @@ void Person::moveRight(float liftX0, float liftX1, bool doorsOpen, int liftFloor
     float personRight = x0 + posX + width;
     float personLeft = x0 + posX;
 
-    if (!isInsideLift) {
+    if (!insideLift) {
         // ulazak u lift moguc samo kada su vrata otvorena i osoba na istom spratu
         if (sameFloor && doorsOpen) {
             if (personRight >= liftX0) {
-                isInsideLift = true; // osoba ulazi u lift
+                insideLift = true; // osoba ulazi u lift
             }
         }
 
@@ -140,7 +143,7 @@ bool Person::touchesLift(float liftX0)
 }
 void Person::syncWithLift(float liftY0,int liftFloor)
 {
-    if (isInsideLift) {
+    if (insideLift) {
         y0 = liftY0;  // osoba prati lift
         floor = liftFloor;
     }
