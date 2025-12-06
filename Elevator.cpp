@@ -115,7 +115,7 @@ void Elevator::updateLift(PanelGrid& panelGrid, bool personInLift)
         auto& buttons = panelGrid.getFloorButtons();
         for (int i = 0; i < 8; i++) // indeksi 0..7 su spratovi
         {
-            if (buttons[i].floor == liftFloor && doorsOpen) {
+            if (buttons[i].floor == liftFloor && doorsOpen && targetFloors.size() == 0) {
                 // Ne produžavamo duration, samo reset dugmeta i highlight
                 buttons[i].pressed = false;
                 buttons[i].highlight = false;

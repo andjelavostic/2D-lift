@@ -10,6 +10,7 @@
 #include "../PanelGrid.h"
 #include "../Elevator.h"
 #include "../Person.h"
+#include "../Cursor.h"
 using namespace std;
 // Main fajl funkcija sa osnovnim komponentama OpenGL programa
 
@@ -67,7 +68,9 @@ int main()
     //  SPRATOVI – ravnomerno raspoređeni (suteren do 6. sprata)
     Elevator elevator;
     Person person(1, elevator.getFloorSpacing());
+    Cursor cursor;
 
+    unsigned int cursorShader = createShader("cursor.vert", "cursor.frag");
     
     const int TARGET_FPS = 75;
     const int FRAME_TIME_MS = 1000 / TARGET_FPS;
@@ -129,6 +132,11 @@ int main()
         elevator.drawFloors(shader);
         elevator.drawLift(shader);
         person.draw(shader);
+        double mouseX, mouseY;
+        glfwGetCursorPos(window, &mouseX, &mouseY);
+
+        cursor.draw(cursorShader, mouseX, mouseY, windowWidth, windowHeight);
+
 
         glfwSwapBuffers(window);
         glfwPollEvents();

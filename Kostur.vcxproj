@@ -125,6 +125,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="Elevator.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PanelGrid.cpp" />
@@ -133,6 +134,7 @@
     <ClCompile Include="Source\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cursor.h" />
     <ClInclude Include="Elevator.h" />
     <ClInclude Include="Header\stb_image.h" />
     <ClInclude Include="Header\Util.h" />
@@ -144,10 +146,14 @@
     <None Include=".gitignore" />
     <None Include="basic.frag" />
     <None Include="basic.vert" />
+    <None Include="cursor.frag" />
+    <None Include="cursor.vert" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="C:\Users\Andjela\Downloads\closed.png" />
+    <Image Include="C:\Users\Andjela\Downloads\cursor_black.png" />
+    <Image Include="C:\Users\Andjela\Downloads\cursor_colored.png" />
     <Image Include="C:\Users\Andjela\Downloads\number-six.png" />
     <Image Include="C:\Users\Andjela\Downloads\opened.png" />
     <Image Include="C:\Users\Andjela\Downloads\person.png" />
