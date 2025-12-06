@@ -1,4 +1,4 @@
-#include "Panel.h"
+#include "../Header/Panel.h"
 #include <GL/glew.h>
 
 Panel::Panel(float x0, float x1, float y0, float y1, float r, float g, float b) {

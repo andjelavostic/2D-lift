@@ -6,12 +6,12 @@
 #include <chrono>
 #include <thread>
 
-#include "../Panel.h"
-#include "../PanelGrid.h"
-#include "../Elevator.h"
-#include "../Person.h"
-#include "../Cursor.h"
-#include "../Overlay.h"
+#include "../Header/Panel.h"
+#include "../Header/PanelGrid.h"
+#include "../Header/Elevator.h"
+#include "../Header/Person.h"
+#include "../Header/Cursor.h"
+#include "../Header/Overlay.h"
 using namespace std;
 // Main fajl funkcija sa osnovnim komponentama OpenGL programa
 
@@ -48,8 +48,9 @@ int main()
 
     if (glewInit() != GLEW_OK) return endProgram("GLEW nije uspeo da se inicijalizuje.");
 
-    unsigned int shader = createShader("basic.vert", "basic.frag");
-    unsigned int cursorShader = createShader("cursor.vert", "cursor.frag");
+    unsigned int shader = createShader("Shaders/basic.vert", "Shaders/basic.frag");
+    unsigned int cursorShader = createShader("Shaders/cursor.vert", "Shaders/cursor.frag");
+
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);

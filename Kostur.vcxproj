@@ -102,7 +102,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>Kostur/Header</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>
+      </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -125,32 +126,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Cursor.cpp" />
-    <ClCompile Include="Elevator.cpp" />
-    <ClCompile Include="Overlay.cpp" />
-    <ClCompile Include="Panel.cpp" />
-    <ClCompile Include="PanelGrid.cpp" />
-    <ClCompile Include="Person.cpp" />
+    <ClCompile Include="Source\Cursor.cpp" />
+    <ClCompile Include="Source\Elevator.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Overlay.cpp" />
+    <ClCompile Include="Source\Panel.cpp" />
+    <ClCompile Include="Source\PanelGrid.cpp" />
+    <ClCompile Include="Source\Person.cpp" />
     <ClCompile Include="Source\Util.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Cursor.h" />
-    <ClInclude Include="Elevator.h" />
+    <ClInclude Include="Header\Cursor.h" />
+    <ClInclude Include="Header\Elevator.h" />
+    <ClInclude Include="Header\Overlay.h" />
+    <ClInclude Include="Header\Panel.h" />
+    <ClInclude Include="Header\PanelGrid.h" />
+    <ClInclude Include="Header\Person.h" />
     <ClInclude Include="Header\stb_image.h" />
     <ClInclude Include="Header\Util.h" />
-    <ClInclude Include="Overlay.h" />
-    <ClInclude Include="Panel.h" />
-    <ClInclude Include="PanelGrid.h" />
-    <ClInclude Include="Person.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
-    <None Include="basic.frag" />
-    <None Include="basic.vert" />
-    <None Include="cursor.frag" />
-    <None Include="cursor.vert" />
     <None Include="packages.config" />
+    <None Include="Shaders\basic.frag" />
+    <None Include="Shaders\basic.vert" />
+    <None Include="Shaders\cursor.frag" />
+    <None Include="Shaders\cursor.vert" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="C:\Users\Andjela\Downloads\closed.png" />

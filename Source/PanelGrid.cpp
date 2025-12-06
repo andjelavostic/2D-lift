@@ -1,6 +1,6 @@
-#include "PanelGrid.h"
+#include "../Header/PanelGrid.h"
 #include <iostream>
-#include "../2D-lift//Header/Util.h"
+#include "../Header/Util.h"
 
 PanelGrid::PanelGrid(float left, float right, float bottom, float top,
     int r, int c, float buttonWidth, float buttonHeight,
@@ -105,7 +105,7 @@ void PanelGrid::checkClick(float mouseX, float mouseY, bool inLift)
                 state.highlight = true;
             }// dugme se uokviruje / highlight-uje
             state.pressed = true;   // opcionalno: dugme je pritisnuto
-            std::cout << "Dugme " << i << " kliknuto!" << std::endl;
+            //std::cout << "Dugme " << i << " kliknuto!" << std::endl;
             // Posebna logika za Open door - index 9
             
         }

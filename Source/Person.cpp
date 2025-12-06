@@ -1,6 +1,6 @@
-#include "Person.h"
+#include "../Header/Person.h"
 #include <GL/glew.h>
-#include "../2D-lift/Header/Util.h"
+#include "../Header/Util.h"
 Person::Person(int startFloor, float floorSpacing, float w, float heightFactor, float startX) {
     width = w;
     height = floorSpacing * heightFactor;

@@ -21,16 +21,22 @@
     <ClCompile Include="Source\Util.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Person.cpp">
+    <ClCompile Include="Source\Overlay.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Elevator.cpp">
+    <ClCompile Include="Source\Panel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Panel.cpp">
+    <ClCompile Include="Source\PanelGrid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="PanelGrid.cpp">
+    <ClCompile Include="Source\Person.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Cursor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Elevator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -41,28 +47,40 @@
     <ClInclude Include="Header\Util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Person.h">
+    <ClInclude Include="Header\Cursor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Elevator.h">
+    <ClInclude Include="Header\Elevator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Panel.h">
+    <ClInclude Include="Header\Overlay.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="PanelGrid.h">
+    <ClInclude Include="Header\Panel.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\PanelGrid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Header\Person.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="basic.vert">
-      <Filter>Source Files</Filter>
-    </None>
-    <None Include="basic.frag">
-      <Filter>Source Files</Filter>
-    </None>
     <None Include=".gitignore" />
+    <None Include="Shaders\basic.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\cursor.vert">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\cursor.frag">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="Shaders\basic.frag">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="C:\Users\Andjela\Downloads\opened.png">
@@ -108,6 +126,15 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="C:\Users\Andjela\Downloads\su.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="C:\Users\Andjela\Downloads\cursor_black.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="C:\Users\Andjela\Downloads\cursor_colored.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\template.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

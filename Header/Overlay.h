@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 #include <GL/glew.h>
-#include "../2D-lift/Header/Util.h"
+#include "Util.h"
 class Overlay {
 public:
     Overlay();

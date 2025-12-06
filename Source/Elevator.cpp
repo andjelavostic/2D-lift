@@ -1,8 +1,8 @@
-#include "Elevator.h"
+#include "../Header/Elevator.h"
 #include <GL/glew.h>
 #include <cmath>
 #include <GLFW/glfw3.h>
-#include "../2D-lift/Header/Util.h"
+#include "../Header/Util.h"
 #include <iostream>
 #include <algorithm>
 Elevator::Elevator(int floors, int startFloor, float x0, float width) {
