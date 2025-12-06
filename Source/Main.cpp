@@ -11,6 +11,7 @@
 #include "../Elevator.h"
 #include "../Person.h"
 #include "../Cursor.h"
+#include "../Overlay.h"
 using namespace std;
 // Main fajl funkcija sa osnovnim komponentama OpenGL programa
 
@@ -48,9 +49,10 @@ int main()
     if (glewInit() != GLEW_OK) return endProgram("GLEW nije uspeo da se inicijalizuje.");
 
     unsigned int shader = createShader("basic.vert", "basic.frag");
+    unsigned int cursorShader = createShader("cursor.vert", "cursor.frag");
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     // Crtaj levu polovinu (tamno siva)
     Panel leftPanel(-1.0f, 0.0f, -1.0f, 1.0f, 0.3f, 0.2f, 0.3f);
    
@@ -69,12 +71,14 @@ int main()
     Elevator elevator;
     Person person(1, elevator.getFloorSpacing());
     Cursor cursor;
-
-    unsigned int cursorShader = createShader("cursor.vert", "cursor.frag");
+    Overlay overlay;
+    overlay.setPosition(-1.0f, 1.0f); //na ivici
+    overlay.setSize(0.3f, 0.15f);
+    
     
     const int TARGET_FPS = 75;
     const int FRAME_TIME_MS = 1000 / TARGET_FPS;
-
+    
     while (!glfwWindowShouldClose(window))
     {
         auto frameStart = std::chrono::high_resolution_clock::now();
@@ -132,6 +136,8 @@ int main()
         elevator.drawFloors(shader);
         elevator.drawLift(shader);
         person.draw(shader);
+        overlay.draw(shader);
+
         double mouseX, mouseY;
         glfwGetCursorPos(window, &mouseX, &mouseY);
         cursor.setVentilation(elevator.isVentilationOn());

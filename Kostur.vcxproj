@@ -127,6 +127,7 @@
   <ItemGroup>
     <ClCompile Include="Cursor.cpp" />
     <ClCompile Include="Elevator.cpp" />
+    <ClCompile Include="Overlay.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="PanelGrid.cpp" />
     <ClCompile Include="Person.cpp" />
@@ -138,6 +139,7 @@
     <ClInclude Include="Elevator.h" />
     <ClInclude Include="Header\stb_image.h" />
     <ClInclude Include="Header\Util.h" />
+    <ClInclude Include="Overlay.h" />
     <ClInclude Include="Panel.h" />
     <ClInclude Include="PanelGrid.h" />
     <ClInclude Include="Person.h" />
@@ -168,6 +170,7 @@
     <Image Include="Resources\number-one.png" />
     <Image Include="Resources\open.png" />
     <Image Include="Resources\stop.png" />
+    <Image Include="Resources\template.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
