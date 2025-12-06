@@ -83,7 +83,7 @@ int main()
         // -------- Kretanje osobe levo-desno --------
 
         if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) person.moveLeft(elevator.getLiftX0(),elevator.isDoorsOpen());
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) person.moveRight(elevator.getLiftX0(),elevator.getLiftX1(), elevator.isDoorsOpen(), elevator.getLiftFloor());
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) person.moveRight(elevator.getLiftX0(),elevator.getLiftX1(),elevator.getLiftY0(), elevator.isDoorsOpen(), elevator.getLiftFloor());
 
         // poziv lifta
         if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
@@ -92,8 +92,8 @@ int main()
             }
         }
 
-        elevator.updateLift();
-        person.syncWithLift(elevator.getLiftY0(),elevator.getLiftFloor()); 
+        elevator.updateLift(leftPanelButtons,person.isInsideLift());
+        person.syncWithLift(elevator.getLiftY0(),elevator.getLiftY1(), elevator.getLiftFloor());
         
         bool mouseDown = false;
 

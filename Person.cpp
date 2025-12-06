@@ -94,7 +94,7 @@ void Person::moveLeft(float liftX0, bool doorsOpen)
     facingRight = false;
     u0 = 1.0f; u1 = 0.0f;
 }
-void Person::moveRight(float liftX0, float liftX1, bool doorsOpen, int liftFloor)
+void Person::moveRight(float liftX0, float liftX1,float liftY0, bool doorsOpen, int liftFloor)
 {
     bool sameFloor = (floor == liftFloor);
 
@@ -109,6 +109,9 @@ void Person::moveRight(float liftX0, float liftX1, bool doorsOpen, int liftFloor
         if (sameFloor && doorsOpen) {
             if (personRight >= liftX0) {
                 insideLift = true; // osoba ulazi u lift
+                liftOffsetY = y0 - liftY0;
+
+
             }
         }
 
@@ -141,12 +144,15 @@ bool Person::touchesLift(float liftX0)
     float personRight = x0 + posX + width;
     return personRight >= liftX0;
 }
-void Person::syncWithLift(float liftY0,int liftFloor)
+void Person::syncWithLift(float liftY0,float liftY1,int liftFloor)
 {
-    if (insideLift) {
-        y0 = liftY0;  // osoba prati lift
-        floor = liftFloor;
-    }
+    if (!insideLift) return;
+
+    float liftHeight = liftY1 - liftY0; // visina lifta, moraš proslediti ako liftHeight nije dostupan
+    y0 = liftY0 + liftOffsetY;       // donja granica osobe prati lift
+    y1 = y0 + height;                    // gornja granica ostaje ista u odnosu na donju
+
+    floor = liftFloor;
 
 }
 

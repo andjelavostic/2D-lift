@@ -54,6 +54,9 @@ public:
     // Provera klika miša
     void checkClick(float mouseX, float mouseY, bool inLift);
 
+    std::vector<ButtonState>& getFloorButtons() {
+        return floorButtons;
+    }
     // Destruktor
     ~PanelGrid();
 };
