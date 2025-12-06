@@ -27,6 +27,8 @@ private:
     float doorOpenTime = 0.0f;         // broji sekunde otvaranja vrata
     double lastDoorCloseTime = 0.0;
     bool doorExtended = false;
+    bool ventilationOn = false;
+
     GLuint texClosed;
     GLuint texOpened;
 
@@ -49,6 +51,7 @@ public:
     bool isDoorsOpen() { return doorsOpen; }
     float getDoorOpenTime() const { return doorOpenTime; }
     float getDoorDuration() const { return doorDuration; }
+    bool isVentilationOn() const { return ventilationOn; }
 
     void setDoorsOpen(bool open) { doorsOpen = open; }
     void setDoorOpenTime(float t) { doorOpenTime = t; }

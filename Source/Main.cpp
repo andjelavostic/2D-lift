@@ -134,7 +134,7 @@ int main()
         person.draw(shader);
         double mouseX, mouseY;
         glfwGetCursorPos(window, &mouseX, &mouseY);
-
+        cursor.setVentilation(elevator.isVentilationOn());
         cursor.draw(cursorShader, mouseX, mouseY, windowWidth, windowHeight);
 
 

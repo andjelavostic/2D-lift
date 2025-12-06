@@ -113,6 +113,11 @@ void Elevator::updateLift(PanelGrid& panelGrid, bool personInLift)
     if (personInLift)
     {
         auto& buttons = panelGrid.getFloorButtons();
+        // Dugme ventilacije je indeks 11
+        if (buttons[11].pressed) {
+            ventilationOn = true;       // uklju?i ventilaciju
+            buttons[11].pressed = false; // reset dugmeta
+        }
         for (int i = 0; i < 8; i++) // indeksi 0..7 su spratovi
         {
             if (buttons[i].floor == liftFloor && doorsOpen && targetFloors.size() == 0) {
@@ -202,7 +207,10 @@ void Elevator::updateLift(PanelGrid& panelGrid, bool personInLift)
         doorOpenTime = now;
         doorDuration = 5.0f;
         doorExtended = false;
-
+        // Ako je lift stigao na sprat i ventilacija je uklju?ena, a ovo je prvi cilj
+        if (ventilationOn && !targetFloors.empty() && liftFloor == targetFloors.front()) {
+            ventilationOn = false;
+        }
         // reset dugme i highlight
         for (auto& btn : panelGrid.getFloorButtons())
         {
