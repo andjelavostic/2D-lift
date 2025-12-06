@@ -95,19 +95,19 @@
     <Image Include="Resources\open.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="Resources\pr.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="Resources\stop.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="Resources\su.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="Resources\close.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="C:\Users\Andjela\Downloads\number-six.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="C:\Users\Andjela\Downloads\pr.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="C:\Users\Andjela\Downloads\su.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
