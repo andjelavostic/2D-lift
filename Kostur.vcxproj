@@ -148,8 +148,20 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="C:\Users\Andjela\Downloads\closed.png" />
+    <Image Include="C:\Users\Andjela\Downloads\number-six.png" />
     <Image Include="C:\Users\Andjela\Downloads\opened.png" />
     <Image Include="C:\Users\Andjela\Downloads\person.png" />
+    <Image Include="Resources\close.png" />
+    <Image Include="Resources\fan.png" />
+    <Image Include="Resources\number-2.png" />
+    <Image Include="Resources\number-3.png" />
+    <Image Include="Resources\number-five.png" />
+    <Image Include="Resources\number-four.png" />
+    <Image Include="Resources\number-one.png" />
+    <Image Include="Resources\open.png" />
+    <Image Include="Resources\pr.png" />
+    <Image Include="Resources\stop.png" />
+    <Image Include="Resources\su.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

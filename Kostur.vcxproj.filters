@@ -74,5 +74,41 @@
     <Image Include="C:\Users\Andjela\Downloads\person.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="Resources\fan.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\number-2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\number-3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\number-five.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\number-four.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\number-one.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\open.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\pr.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\stop.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\su.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="Resources\close.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="C:\Users\Andjela\Downloads\number-six.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

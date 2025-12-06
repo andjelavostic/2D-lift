@@ -54,7 +54,7 @@ int main()
     PanelGrid leftPanelButtons(
         -1.0f, 0.0f, -1.0f, 1.0f, // pozicija panela
         6, 2,                     // rows, cols
-        0.18f, 0.18f,             // buttonWidth, buttonHeight
+        0.18f, 0.27f,             // buttonWidth, buttonHeight
         0.05f, 0.05f              // horizontal i vertikalni razmak
     );
 

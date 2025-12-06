@@ -1,6 +1,7 @@
 #pragma once
 #include <GL/glew.h>
 #include <vector>
+#include <string>
 using namespace std;
 
 class PanelGrid {
@@ -9,6 +10,26 @@ private:
     vector<GLuint> VAOs;
     vector<GLuint> VBOs;
     float color[3];
+    struct Button {
+        GLuint VAO;
+        GLuint VBO;
+        GLuint texture;
+    };
+    std::vector<Button> buttons;
+    std::vector<std::string> texturePaths = {
+    "resources/su.png",
+    "resources/pr.png",
+    "resources/number-one.png",
+    "resources/number-2.png",
+    "resources/number-3.png",
+    "resources/number-four.png",
+    "resources/number-five.png",
+    "resources/number-six.png",
+    "resources/close.png",
+    "resources/open.png",
+    "resources/stop.png",
+    "resources/fan.png"
+    };
 
 public:
     // Konstruktor

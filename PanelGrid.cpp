@@ -1,6 +1,6 @@
 #include "PanelGrid.h"
 #include <iostream>
-
+#include "../2D-lift//Header/Util.h"
 PanelGrid::PanelGrid(float left, float right, float bottom, float top,
     int r, int c, float buttonWidth, float buttonHeight,
     float hSpacing, float vSpacing,
@@ -17,7 +17,7 @@ PanelGrid::PanelGrid(float left, float right, float bottom, float top,
 
     float totalWidth = cols * buttonWidth + (cols - 1) * hSpacing;
     float totalHeight = rows * buttonHeight + (rows - 1) * vSpacing;
-
+    buttons.resize(totalButtons);
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             int idx = i * cols + j;
@@ -28,14 +28,30 @@ PanelGrid::PanelGrid(float left, float right, float bottom, float top,
             float y0 = bottom + (top - bottom - totalHeight) / 2 + (rows - 1 - i) * (buttonHeight + vSpacing);
             float y1 = y0 + buttonHeight;
 
-            float vertices[] = { x0, y0, x1, y0, x1, y1, x0, y1 };
+            buttons[idx].texture = loadImageToTexture(texturePaths[idx].c_str());
 
-            glBindVertexArray(VAOs[idx]);
-            glBindBuffer(GL_ARRAY_BUFFER, VBOs[idx]);
+            float vertices[] = {
+                // x, y, u, v
+                x0, y0, 0.0f, 0.0f,
+                x1, y0, 1.0f, 0.0f,
+                x1, y1, 1.0f, 1.0f,
+                x0, y1, 0.0f, 1.0f
+            };
+
+            glGenVertexArrays(1, &buttons[idx].VAO);
+            glGenBuffers(1, &buttons[idx].VBO);
+
+            glBindVertexArray(buttons[idx].VAO);
+            glBindBuffer(GL_ARRAY_BUFFER, buttons[idx].VBO);
             glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-            glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+            // pozicija
+            glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
             glEnableVertexAttribArray(0);
+
+            // UV
+            glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+            glEnableVertexAttribArray(1);
         }
     }
 
@@ -46,14 +62,18 @@ PanelGrid::PanelGrid(float left, float right, float bottom, float top,
 
 void PanelGrid::draw(GLuint shader) {
     glUseProgram(shader);
-    glUniform1i(glGetUniformLocation(shader, "useTexture"), 0);
-    glUniform3f(glGetUniformLocation(shader, "uColor"), color[0], color[1], color[2]);
+    glUniform1i(glGetUniformLocation(shader, "useTexture"), 1);
     glUniform2f(glGetUniformLocation(shader, "uOffset"), 0.0f, 0.0f);
-    for (auto vao : VAOs) {
-        glBindVertexArray(vao);
+
+    for (auto& b : buttons) {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, b.texture);
+        glUniform1i(glGetUniformLocation(shader, "uTexture"), 0);
+
+        glBindVertexArray(b.VAO);
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     }
-    glBindVertexArray(0);
+
 }
 
 PanelGrid::~PanelGrid() {
