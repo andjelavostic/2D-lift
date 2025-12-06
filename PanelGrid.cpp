@@ -10,10 +10,11 @@ PanelGrid::PanelGrid(float left, float right, float bottom, float top,
     color[0] = red; color[1] = green; color[2] = blue;
 
     int totalButtons = rows * cols;
-    VAOs.resize(totalButtons);
-    VBOs.resize(totalButtons);
-    glGenVertexArrays(totalButtons, VAOs.data());
-    glGenBuffers(totalButtons, VBOs.data());
+    floorButtons.push_back({ 0, false, false }); // SU
+    floorButtons.push_back({ 1, false, false }); // PR
+    for (int f = 2; f <= 7; ++f) {             // 1..6
+        floorButtons.push_back({ f, false, false });
+    }
 
     float totalWidth = cols * buttonWidth + (cols - 1) * hSpacing;
     float totalHeight = rows * buttonHeight + (rows - 1) * vSpacing;
@@ -54,6 +55,11 @@ PanelGrid::PanelGrid(float left, float right, float bottom, float top,
             glEnableVertexAttribArray(1);
         }
     }
+    floorButtons.push_back({ 0, false, false }); // SU
+    floorButtons.push_back({ 1, false, false }); // PR
+    for (int f = 2; f <= 7; ++f) {             // 1..6
+        floorButtons.push_back({ f, false, false });
+    }
 
     // Unbind
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -77,6 +83,4 @@ void PanelGrid::draw(GLuint shader) {
 }
 
 PanelGrid::~PanelGrid() {
-    glDeleteVertexArrays(VAOs.size(), VAOs.data());
-    glDeleteBuffers(VBOs.size(), VBOs.data());
 }

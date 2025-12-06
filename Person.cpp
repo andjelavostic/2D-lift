@@ -65,21 +65,72 @@ void Person::draw(GLuint shader) {
     glUniform1i(glGetUniformLocation(shader, "useTexture"), 0); // vracamo boju za ostalo
 }
 
-void Person::moveLeft() {
+void Person::moveLeft(float liftX0, bool doorsOpen)
+{
     posX -= personSpeed;
-    if (posX < 0.0f) posX = 0.0f;
+
+    if (isInsideLift) {
+        // izlazak moguc samo kada su vrata otvorena
+        float personLeft = x0 + posX;
+        if (!doorsOpen) {
+            if (personLeft < liftX0)
+                posX = liftX0 - x0;   // ne moze napolje
+        }
+        else {
+            // vrata otvorena  moze izaci
+            if (personLeft < 0.0f) posX = 0.0f;
+            if (personLeft < liftX0)
+                isInsideLift = false; // izasla je
+        }
+    }
+    else {
+        // normalno levo pre nego sto udje
+        if (posX < 0.0f) posX = 0.0f;
+    }
+
     facingRight = false;
-
-    u0 = 1.0f; u1 = 0.0f; // flip X UV
+    u0 = 1.0f; u1 = 0.0f;
 }
+void Person::moveRight(float liftX0, float liftX1, bool doorsOpen, int liftFloor)
+{
+    bool sameFloor = (floor == liftFloor);
 
-void Person::moveRight(float liftX0) {
+    // Pomeri prvo
     posX += personSpeed;
-    float personRight = x0 + posX + width;
-    if (personRight > liftX0) posX = liftX0 - width - x0;
-    facingRight = true;
 
-    u0 = 0.0f; u1 = 1.0f; // normal X UV
+    float personRight = x0 + posX + width;
+    float personLeft = x0 + posX;
+
+    if (!isInsideLift) {
+        // ulazak u lift moguc samo kada su vrata otvorena i osoba na istom spratu
+        if (sameFloor && doorsOpen) {
+            if (personRight >= liftX0) {
+                isInsideLift = true; // osoba ulazi u lift
+            }
+        }
+
+        // ogranicenja ako lift zatvoren ili osoba ispred lifta
+        if (!sameFloor || !doorsOpen) {
+            if (personRight > liftX0)
+                posX = liftX0 - width - x0; // ne sme dalje
+        }
+        else {
+            // osoba u liftu  ogranicenje desno
+            if (personRight > liftX1)
+                posX = liftX1 - width - x0;
+        }
+    }
+    else {
+        // osoba je vec u liftu  desno ne sme van lifta
+        float rightLimit = liftX1;
+        if (personRight > rightLimit)
+            posX = rightLimit - width - x0;
+
+        // levo može slobodno (kontroliše moveLeft)
+    }
+
+    facingRight = true;
+    u0 = 0.0f; u1 = 1.0f;
 }
 
 bool Person::touchesLift(float liftX0)
@@ -87,5 +138,15 @@ bool Person::touchesLift(float liftX0)
     float personRight = x0 + posX + width;
     return personRight >= liftX0;
 }
+void Person::syncWithLift(float liftY0,int liftFloor)
+{
+    if (isInsideLift) {
+        y0 = liftY0;  // osoba prati lift
+        floor = liftFloor;
+    }
+
+}
+
+
 
 

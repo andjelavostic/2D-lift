@@ -40,6 +40,7 @@ public:
     float getFloorSpacing() { return floorSpacing; }
     int getLiftFloor() { return liftFloor; }
     float getLiftX0() { return liftX0; }
+    float getLiftX1() { return liftX1; }
     float getLiftY0() { return liftY0; }
     bool isDoorsOpen() { return doorsOpen; }
 };

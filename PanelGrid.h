@@ -7,8 +7,6 @@ using namespace std;
 class PanelGrid {
 private:
     int rows, cols;
-    vector<GLuint> VAOs;
-    vector<GLuint> VBOs;
     float color[3];
     struct Button {
         GLuint VAO;
@@ -30,6 +28,13 @@ private:
     "resources/stop.png",
     "resources/fan.png"
     };
+    struct FloorButton {
+        int floor;         // broj sprata
+        bool pressed;      // da li je taster trenutno pritisnut
+        bool highlight;    // da li da se crta uokviren
+    };
+    std::vector<FloorButton> floorButtons;
+
 
 public:
     // Konstruktor

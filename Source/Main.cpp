@@ -14,6 +14,7 @@ using namespace std;
 // Projekat je dozvoljeno pisati počevši od ovog kostura
 // Toplo se preporučuje razdvajanje koda po fajlovima (i eventualno potfolderima) !!!
 // Srećan rad!
+
 int main()
 {
     glfwSetErrorCallback([](int code, const char* msg) {
@@ -77,8 +78,9 @@ int main()
         glUseProgram(shader);
 
         // -------- Kretanje osobe levo-desno --------
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) person.moveLeft();
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) person.moveRight(elevator.getLiftX0());
+
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) person.moveLeft(elevator.getLiftX0(),elevator.isDoorsOpen());
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) person.moveRight(elevator.getLiftX0(),elevator.getLiftX1(), elevator.isDoorsOpen(), elevator.getLiftFloor());
 
         // poziv lifta
         if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS) {
@@ -88,7 +90,8 @@ int main()
         }
 
         elevator.updateLift();
-
+        person.syncWithLift(elevator.getLiftY0(),elevator.getLiftFloor()); 
+        
 
         // -------- Crtanje scene --------
         leftPanel.draw(shader);
