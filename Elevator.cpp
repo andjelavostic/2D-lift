@@ -115,6 +115,12 @@ void Elevator::updateLift(PanelGrid& panelGrid, bool personInLift)
         auto& buttons = panelGrid.getFloorButtons();
         for (int i = 0; i < 8; i++) // indeksi 0..7 su spratovi
         {
+            if (buttons[i].floor == liftFloor && doorsOpen) {
+                // Ne produžavamo duration, samo reset dugmeta i highlight
+                buttons[i].pressed = false;
+                buttons[i].highlight = false;
+                continue;
+            }
             if (buttons[i].pressed &&
                 std::find(targetFloors.begin(), targetFloors.end(), buttons[i].floor) == targetFloors.end())
             {
@@ -134,14 +140,16 @@ void Elevator::updateLift(PanelGrid& panelGrid, bool personInLift)
                 buttons[8].pressed = false;
             }
 
-            // Dugme za produženje vrata
-            if (buttons[9].pressed)
+            // Dugme za produženje vrata (indeks 9)
+            if (buttons[9].pressed && !doorExtended)
             {
-                float remaining = doorDuration - (now - doorOpenTime);
-                doorDuration = remaining + 5.0f; // dodaj 5 sekundi
-                doorOpenTime = now;              // reset startnog vremena
+                float elapsed = now - doorOpenTime;          // koliko je vrata ve? otvoreno
+                doorDuration = elapsed + 5.0f+0.1f;  // produžimo za 5 sekundi ukupno
+                doorExtended = true;                         // može se samo jednom
                 buttons[9].pressed = false;
             }
+
+
         }
     }
 
