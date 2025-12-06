@@ -44,7 +44,6 @@ void Cursor::draw(GLuint shader, double mouseX, double mouseY, int screenWidth, 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, cursorTex);
     glUniform1i(glGetUniformLocation(shader, "uTexture"), 0);
-
     // mouse -> NDC [-1,1]
     float x = (float)((mouseX / screenWidth) * 2.0 - 1.0);
     float y = (float)(1.0 - (mouseY / screenHeight) * 2.0);

@@ -45,7 +45,7 @@ void Person::draw(GLuint shader) {
     glBindTexture(GL_TEXTURE_2D, texPerson);
     glUniform1i(glGetUniformLocation(shader, "uTexture"), 0);
     glUniform1i(glGetUniformLocation(shader, "useTexture"), 1);
-
+    glUniform1f(glGetUniformLocation(shader, "uAlpha"), 1.0f);
     GLuint offsetLoc = glGetUniformLocation(shader, "uOffset");
     glUniform2f(offsetLoc, posX, 0.0f);
 

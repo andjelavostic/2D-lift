@@ -82,7 +82,7 @@ void PanelGrid::draw(GLuint shader) {
         glBindTexture(GL_TEXTURE_2D, b.texture);
         glUniform1i(glGetUniformLocation(shader, "uTexture"), 0);
         glUniform1i(glGetUniformLocation(shader, "useTexture"), 1);
-
+        glUniform1f(glGetUniformLocation(shader, "uAlpha"), 1.0f);
         // highlight uniform
         glUniform1i(glGetUniformLocation(shader, "uHighlight"), state.highlight ? 1 : 0);
         glUniform1f(glGetUniformLocation(shader, "highlightWidth"), 0.05f);

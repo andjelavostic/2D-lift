@@ -8,6 +8,7 @@ uniform sampler2D uTexture;
 uniform bool useTexture;      
 uniform bool uHighlight;      
 uniform float highlightWidth; // širina okvira (0-0.5)
+uniform float uAlpha = 1.0;
 
 void main() {
     vec4 baseColor = useTexture ? texture(uTexture, TexCoord) : vec4(uColor, 1.0);
@@ -22,7 +23,7 @@ void main() {
             baseColor.rgb = vec3(1.0); // bela boja
         }
     }
-
+    baseColor.a *= uAlpha; // primeni providnost
     FragColor = baseColor;
 }
 

@@ -57,7 +57,7 @@ void Overlay::draw(GLuint shader)
     glUniform1i(glGetUniformLocation(shader, "useTexture"), 1);
     glUniform2f(glGetUniformLocation(shader, "uOffset"), 0.0f, 0.0f);
     glUniform1i(glGetUniformLocation(shader, "uHighlight"), 0);
-
+    glUniform1f(glGetUniformLocation(shader, "uAlpha"), 0.5f);
     float vertices[] = {
         posX, posY - height, 0.0f, 0.0f,          // donji-levo
         posX + width, posY - height, 1.0f, 0.0f,  // donji-desno

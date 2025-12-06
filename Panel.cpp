@@ -33,6 +33,7 @@ void Panel::draw(GLuint shader) {
     glUniform3f(glGetUniformLocation(shader, "uColor"), color[0], color[1], color[2]);
     glUniform2f(glGetUniformLocation(shader, "uOffset"), 0.0f, 0.0f);
     glUniform1i(glGetUniformLocation(shader, "uHighlight"), 0);
+    glUniform1f(glGetUniformLocation(shader, "uAlpha"), 1.0f);
     glBindVertexArray(VAO);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     glBindVertexArray(0);

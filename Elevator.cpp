@@ -69,6 +69,7 @@ void Elevator::drawFloors(GLuint shader) {
     glUniform1i(glGetUniformLocation(shader, "useTexture"), 0);
     glUniform1i(glGetUniformLocation(shader, "uHighlight"), 0);
     glUniform3f(glGetUniformLocation(shader, "uColor"), 1.0f, 1.0f, 1.0f);
+    glUniform1f(glGetUniformLocation(shader, "uAlpha"), 1.0f);
     for (int i = 0; i < totalFloors; i++) {
         glBindVertexArray(floorVAOs[i]);
         glDrawArrays(GL_LINES, 0, 2);
@@ -83,6 +84,7 @@ void Elevator::drawLift(GLuint shader) {
     glUniform1i(glGetUniformLocation(shader, "uTexture"), 0);
     glUniform1i(glGetUniformLocation(shader, "useTexture"), 1);
     glUniform1i(glGetUniformLocation(shader, "uHighlight"), 0);
+    glUniform1f(glGetUniformLocation(shader, "uAlpha"), 1.0f);
     glBindVertexArray(liftVAO);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
