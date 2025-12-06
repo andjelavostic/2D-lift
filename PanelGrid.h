@@ -2,7 +2,6 @@
 #include <GL/glew.h>
 #include <vector>
 #include <string>
-
 class PanelGrid {
 private:
     int rows, cols;

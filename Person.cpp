@@ -34,7 +34,7 @@ Person::Person(int startFloor, float floorSpacing, float w, float heightFactor, 
     glEnableVertexAttribArray(1);
     glBindVertexArray(0);
 
-    personSpeed = 0.001f;
+    personSpeed = 0.005f;
     texPerson = loadImageToTexture("resources/person.png");
 }
 
@@ -142,7 +142,7 @@ void Person::moveRight(float liftX0, float liftX1,float liftY0, bool doorsOpen, 
 bool Person::touchesLift(float liftX0)
 {
     float personRight = x0 + posX + width;
-    return personRight >= liftX0;
+    return personRight >= liftX0 && !insideLift;
 }
 void Person::syncWithLift(float liftY0,float liftY1,int liftFloor)
 {

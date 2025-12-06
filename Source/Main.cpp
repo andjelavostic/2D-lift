@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 #include "../Header/Util.h"
+#include <chrono>
+#include <thread>
 
 #include "../Panel.h"
 #include "../PanelGrid.h"
@@ -67,10 +69,12 @@ int main()
     Person person(1, elevator.getFloorSpacing());
 
     
-    int targetFloor = 0;
+    const int TARGET_FPS = 75;
+    const int FRAME_TIME_MS = 1000 / TARGET_FPS;
 
     while (!glfwWindowShouldClose(window))
     {
+        auto frameStart = std::chrono::high_resolution_clock::now();
         // ESC izlazak
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
             glfwSetWindowShouldClose(window, true);
@@ -118,10 +122,6 @@ int main()
         else {
             mouseDown = false; // reset kada pustiš taster
         }
-       
-
-       
-
         // -------- Crtanje scene --------
         leftPanel.draw(shader);
         rightPanel.draw(shader);
@@ -132,6 +132,17 @@ int main()
 
         glfwSwapBuffers(window);
         glfwPollEvents();
+
+        auto frameEnd = std::chrono::high_resolution_clock::now();
+
+        auto frameDuration = std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart);
+
+        if (frameDuration.count() < FRAME_TIME_MS)
+        {
+            std::this_thread::sleep_for(
+                std::chrono::milliseconds(FRAME_TIME_MS - frameDuration.count())
+            );
+        }
     }
 
     glfwDestroyWindow(window);

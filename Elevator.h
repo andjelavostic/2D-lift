@@ -24,13 +24,12 @@ private:
     bool doorsOpen;
     float doorDuration = 5.0f;
     std::vector<int> targetFloors; // spratovi koje lift treba da obi?e
-    bool movingUp = false;
     float doorOpenTime = 0.0f;         // broji sekunde otvaranja vrata
-    double lastDoorCloseTime = 0.0; // pamti kada su vrata zatvorena
-
-    //Teksture
+    double lastDoorCloseTime = 0.0;
+    bool doorExtended = false;
     GLuint texClosed;
     GLuint texOpened;
+
 
 public:
     Elevator(int floors = 9, int startFloor = 2, float x0 = 0.75f, float width = 0.15f);
@@ -48,4 +47,10 @@ public:
     float getLiftY0() { return liftY0; }
     float getLiftY1() { return liftY1; }
     bool isDoorsOpen() { return doorsOpen; }
+    float getDoorOpenTime() const { return doorOpenTime; }
+    float getDoorDuration() const { return doorDuration; }
+
+    void setDoorsOpen(bool open) { doorsOpen = open; }
+    void setDoorOpenTime(float t) { doorOpenTime = t; }
+    void setLastDoorCloseTime(double t) { lastDoorCloseTime = t; }
 };

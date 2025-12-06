@@ -1,6 +1,7 @@
 #include "PanelGrid.h"
 #include <iostream>
 #include "../2D-lift//Header/Util.h"
+
 PanelGrid::PanelGrid(float left, float right, float bottom, float top,
     int r, int c, float buttonWidth, float buttonHeight,
     float hSpacing, float vSpacing,
@@ -90,14 +91,13 @@ void PanelGrid::draw(GLuint shader) {
         glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
     }
 }
-void PanelGrid::checkClick(float mouseX, float mouseY, bool inLift) {
+void PanelGrid::checkClick(float mouseX, float mouseY, bool inLift)
+{
     if (!inLift) return; // ne dozvoljavaj klik ako osoba nije u liftu
-
     // prolazimo kroz sva dugmad
     for (int i = 0; i < buttons.size(); i++) {
         ButtonGraphic& b = buttons[i];
         ButtonState& state = floorButtons[i];
-
         // provera da li je klik unutar pravougaonika dugmeta
         if (mouseX >= b.x0 && mouseX <= b.x1 &&
             mouseY >= b.y0 && mouseY <= b.y1) {
@@ -106,9 +106,10 @@ void PanelGrid::checkClick(float mouseX, float mouseY, bool inLift) {
             }// dugme se uokviruje / highlight-uje
             state.pressed = true;   // opcionalno: dugme je pritisnuto
             std::cout << "Dugme " << i << " kliknuto!" << std::endl;
+            // Posebna logika za Open door - index 9
+            
         }
     }
 }
-
 PanelGrid::~PanelGrid() {
 }

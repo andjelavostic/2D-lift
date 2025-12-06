@@ -8,7 +8,6 @@
 Elevator::Elevator(int floors, int startFloor, float x0, float width) {
     totalFloors = floors;
     floorSpacing = 2.0f / (totalFloors - 1);
-
     // Spratovi
     floorVAOs.resize(totalFloors);
     floorVBOs.resize(totalFloors);
@@ -24,7 +23,6 @@ Elevator::Elevator(int floors, int startFloor, float x0, float width) {
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
         glEnableVertexAttribArray(0);
     }
-
     // Lift
     liftFloor = startFloor;
     liftWidth = width;
@@ -41,24 +39,20 @@ Elevator::Elevator(int floors, int startFloor, float x0, float width) {
         liftX1, liftY1, 1.0f, 1.0f, // gornji-desno
         liftX0, liftY1, 0.0f, 1.0f  // gornji-levo
     };
-
     glGenVertexArrays(1, &liftVAO);
     glGenBuffers(1, &liftVBO);
 
     glBindVertexArray(liftVAO);
     glBindBuffer(GL_ARRAY_BUFFER, liftVBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(liftVertices), liftVertices, GL_DYNAMIC_DRAW);
-
     // pozicija
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-
     // UV
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
-
 
     liftCalled = false;
     targetFloor = startFloor;
@@ -89,108 +83,129 @@ void Elevator::drawLift(GLuint shader) {
     glUniform1i(glGetUniformLocation(shader, "uTexture"), 0);
     glUniform1i(glGetUniformLocation(shader, "useTexture"), 1);
     glUniform1i(glGetUniformLocation(shader, "uHighlight"), 0);
-
     glBindVertexArray(liftVAO);
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
 }
 void Elevator::callLift(int floor) {
-    // Dodaj sprat ako ve? nije u listi
+    // Ako je lift na tom spratu i vrata nisu otvorena
+    if (floor == liftFloor) {
+        if (!doorsOpen) {
+            doorsOpen = true;
+            doorOpenTime = (float)glfwGetTime();
+            doorDuration = 5.0f;
+            doorExtended = false;
+        }
+        // Ako su vrata ve? otvorena, ne diraj ništa
+        return; // ne dodaj u targetFloors
+    }
+
+    // Ako sprat još nije u listi ciljeva
     if (std::find(targetFloors.begin(), targetFloors.end(), floor) == targetFloors.end()) {
         targetFloors.push_back(floor);
     }
-
-    // Sortiraj listu po trenutnom pravcu
-    if (liftFloor <= floor) {
-        movingUp = true;
-        std::sort(targetFloors.begin(), targetFloors.end()); // rastu?e
-    }
-    else {
-        movingUp = false;
-        std::sort(targetFloors.rbegin(), targetFloors.rend()); // opadaju?e
-    }
 }
+void Elevator::updateLift(PanelGrid& panelGrid, bool personInLift)
+{
+    float now = glfwGetTime();
 
-void Elevator::updateLift(PanelGrid& panelGrid, bool personInLift) {
-    float currentTime = glfwGetTime();
-
-    // Dodaj kliknute spratove samo kada je osoba unutra i vrata zatvorena
-    if (personInLift && !doorsOpen && currentTime - lastDoorCloseTime > 1.0f) {
-        for (auto& b : panelGrid.getFloorButtons()) {
-            if (b.pressed && std::find(targetFloors.begin(), targetFloors.end(), b.floor) == targetFloors.end()) {
-                targetFloors.push_back(b.floor);
+    // 1) Dodaj spratove redom kojim su kliknuti (ako je osoba u liftu)
+    if (personInLift)
+    {
+        auto& buttons = panelGrid.getFloorButtons();
+        for (int i = 0; i < 8; i++) // indeksi 0..7 su spratovi
+        {
+            if (buttons[i].pressed &&
+                std::find(targetFloors.begin(), targetFloors.end(), buttons[i].floor) == targetFloors.end())
+            {
+                targetFloors.push_back(buttons[i].floor);
+                buttons[i].pressed = false; // reset dugmeta
             }
         }
 
-        // Podesi redosled po trenutnom pravcu
-        if (!targetFloors.empty()) {
-            std::vector<int> upFloors, downFloors;
-            for (int f : targetFloors) {
-                if (f >= liftFloor) upFloors.push_back(f);
-                else downFloors.push_back(f);
+        // Dugmad za vrata dok su otvorena (produženje)
+        if (doorsOpen)
+        {
+            if (buttons[8].pressed) // zatvori vrata odmah
+            {
+                float elapsed = now - doorOpenTime;
+                if (elapsed < doorDuration)
+                    doorOpenTime = now - doorDuration + 0.05f; // kratki offset
+                buttons[8].pressed = false;
             }
 
-            // Ako lift ide gore ili je na mestu i ima više spratova iznad
-            if (!upFloors.empty()) {
-                std::sort(upFloors.begin(), upFloors.end());
-                targetFloors = upFloors;
-                targetFloors.insert(targetFloors.end(), downFloors.begin(), downFloors.end());
+            // Dugme za produženje vrata
+            if (buttons[9].pressed)
+            {
+                float remaining = doorDuration - (now - doorOpenTime);
+                doorDuration = remaining + 5.0f; // dodaj 5 sekundi
+                doorOpenTime = now;              // reset startnog vremena
+                buttons[9].pressed = false;
             }
-            else {
-                std::sort(downFloors.begin(), downFloors.end(), std::greater<int>());
-                targetFloors = downFloors;
-            }
-        }
-    }
-
-    // Ako još ?ekamo 1 sekundu nakon zatvaranja vrata
-    if (!doorsOpen && (currentTime - lastDoorCloseTime < 1.0))
-        return;
-
-    // Pomeri lift ka slede?em spratu
-    if (!targetFloors.empty()) {
-        int nextFloor = targetFloors.front();
-        float targetY = -1.0f + nextFloor * floorSpacing;
-
-        if (std::abs(liftY0 - targetY) > 0.001f) {
-            liftY0 += (targetY > liftY0 ? liftSpeed : -liftSpeed);
-            liftY1 = liftY0 + liftHeight;
-
-            float liftVertices[] = {
-                liftX0, liftY0, 0.0f, 0.0f,
-                liftX1, liftY0, 1.0f, 0.0f,
-                liftX1, liftY1, 1.0f, 1.0f,
-                liftX0, liftY1, 0.0f, 1.0f
-            };
-            glBindBuffer(GL_ARRAY_BUFFER, liftVBO);
-            glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(liftVertices), liftVertices);
-        }
-        else {
-            // lift stigao
-            liftY0 = targetY;
-            liftY1 = liftY0 + liftHeight;
-            liftFloor = nextFloor;
-
-            doorsOpen = true;
-            doorOpenTime = currentTime;
-
-            // reset dugme
-            for (auto& b : panelGrid.getFloorButtons()) {
-                if (b.floor == liftFloor) {
-                    b.pressed = false;
-                    b.highlight = false;
-                    break;
-                }
-            }
-
-            // ukloni sprat iz liste
-            targetFloors.erase(targetFloors.begin());
         }
     }
 
-    // Zatvori vrata nakon 5 sekundi
-    if (doorsOpen && (currentTime - doorOpenTime > 5.0f)) {
-        doorsOpen = false;
-        lastDoorCloseTime = currentTime;
+    // 2) Ako su vrata otvorena, ?ekaj dok ne istekne trajanje
+    if (doorsOpen)
+    {
+        if (now - doorOpenTime >= doorDuration)
+        {
+            doorsOpen = false;
+            lastDoorCloseTime = now;
+        }
+        else
+        {
+            return; // lift se ne pomera dok su vrata otvorena
+        }
+    }
+
+    // 3) Ako nema ciljeva, lift stoji
+    if (targetFloors.empty()) return;
+
+    // 4) Pomeri lift ka slede?em spratu
+    int nextFloor = targetFloors.front();
+    float targetY = -1.0f + nextFloor * floorSpacing;
+
+    if (fabs(liftY0 - targetY) > 0.001f)
+    {
+        // pomeri lift
+        liftY0 += (targetY > liftY0 ? liftSpeed : -liftSpeed);
+        liftY1 = liftY0 + liftHeight;
+
+        // update vertex buffera
+        float liftVertices[] = {
+            liftX0, liftY0, 0.0f, 0.0f,
+            liftX1, liftY0, 1.0f, 0.0f,
+            liftX1, liftY1, 1.0f, 1.0f,
+            liftX0, liftY1, 0.0f, 1.0f
+        };
+        glBindBuffer(GL_ARRAY_BUFFER, liftVBO);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(liftVertices), liftVertices);
+    }
+    else
+    {
+        // Lift je stigao na sprat
+        liftY0 = targetY;
+        liftY1 = liftY0 + liftHeight;
+        liftFloor = nextFloor;
+
+        // Otvori vrata uvek na 5 sekundi
+        doorsOpen = true;
+        doorOpenTime = now;
+        doorDuration = 5.0f;
+        doorExtended = false;
+
+        // reset dugme i highlight
+        for (auto& btn : panelGrid.getFloorButtons())
+        {
+            if (btn.floor == liftFloor)
+            {
+                btn.pressed = false;
+                btn.highlight = false;
+            }
+        }
+
+        // ukloni sprat iz liste ciljeva
+        targetFloors.erase(targetFloors.begin());
     }
 }
