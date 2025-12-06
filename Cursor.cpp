@@ -49,7 +49,7 @@ void Cursor::draw(GLuint shader, double mouseX, double mouseY, int screenWidth, 
     float x = (float)((mouseX / screenWidth) * 2.0 - 1.0);
     float y = (float)(1.0 - (mouseY / screenHeight) * 2.0);
 
-    float size = 0.07f;
+    float size = 0.05f;
 
     float verts[] = {
         x - size, y - size, 0.0f, 0.0f,

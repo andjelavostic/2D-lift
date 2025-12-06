@@ -108,15 +108,14 @@ void Elevator::callLift(int floor) {
 void Elevator::updateLift(PanelGrid& panelGrid, bool personInLift)
 {
     float now = glfwGetTime();
-
+    auto& buttons = panelGrid.getFloorButtons();
     // 1) Dodaj spratove redom kojim su kliknuti (ako je osoba u liftu)
     if (personInLift)
     {
-        auto& buttons = panelGrid.getFloorButtons();
         // Dugme ventilacije je indeks 11
         if (buttons[11].pressed) {
             ventilationOn = true;       // uklju?i ventilaciju
-            buttons[11].pressed = false; // reset dugmeta
+            buttons[11].pressed = true;
         }
         for (int i = 0; i < 8; i++) // indeksi 0..7 su spratovi
         {
@@ -132,6 +131,11 @@ void Elevator::updateLift(PanelGrid& panelGrid, bool personInLift)
                 targetFloors.push_back(buttons[i].floor);
                 buttons[i].pressed = false; // reset dugmeta
             }
+        }
+        // Reset dugmeta ako su vrata zatvorena
+        if (!doorsOpen) {
+            buttons[8].pressed = false;
+            buttons[9].pressed = false;
         }
 
         // Dugmad za vrata dok su otvorena (produženje)
@@ -210,6 +214,7 @@ void Elevator::updateLift(PanelGrid& panelGrid, bool personInLift)
         // Ako je lift stigao na sprat i ventilacija je uklju?ena, a ovo je prvi cilj
         if (ventilationOn && !targetFloors.empty() && liftFloor == targetFloors.front()) {
             ventilationOn = false;
+            buttons[11].pressed = false;
         }
         // reset dugme i highlight
         for (auto& btn : panelGrid.getFloorButtons())
