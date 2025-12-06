@@ -9,7 +9,9 @@ private:
     float posX;
     int floor;
     float personSpeed;
-
+    unsigned texPerson;      // tekstura osobe
+    bool facingRight = true;
+    float u0 = 0.0f, u1 = 1.0f; // UV koordinate po X, za flip
 public:
     Person(int startFloor, float floorSpacing, float width = 0.1f, float heightFactor = 0.7f, float startX = 0.05f);
 

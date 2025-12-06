@@ -149,6 +149,7 @@
   <ItemGroup>
     <Image Include="C:\Users\Andjela\Downloads\closed.png" />
     <Image Include="C:\Users\Andjela\Downloads\opened.png" />
+    <Image Include="C:\Users\Andjela\Downloads\person.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
