@@ -26,8 +26,8 @@ int main()
         });
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_ANY_PROFILE);
 
     // Dohvati monitor za fullscreen
     GLFWmonitor* monitor = glfwGetPrimaryMonitor();
@@ -105,7 +105,7 @@ int main()
         }
 
         elevator.updateLift(leftPanelButtons,person.isInsideLift());
-        person.syncWithLift(elevator.getLiftY0(),elevator.getLiftY1(), elevator.getLiftFloor());
+        person.syncWithLift(elevator.getLiftY0(), elevator.getLiftFloor());
         
         bool mouseDown = false;
 

@@ -25,7 +25,7 @@ public:
     float getPosX() { return posX; }
     int getFloor() { return floor; }
     bool touchesLift(float liftX0);
-    void syncWithLift(float liftY0,float liftY1, int liftFloor);
+    void syncWithLift(float liftY0, int liftFloor);
     float getRightX() { return x0 + posX + width; }
     bool isInsideLift() { return insideLift; }
 

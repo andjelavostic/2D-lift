@@ -144,11 +144,10 @@ bool Person::touchesLift(float liftX0)
     float personRight = x0 + posX + width;
     return personRight >= liftX0 && !insideLift;
 }
-void Person::syncWithLift(float liftY0,float liftY1,int liftFloor)
+void Person::syncWithLift(float liftY0,int liftFloor)
 {
     if (!insideLift) return;
-
-    float liftHeight = liftY1 - liftY0; // visina lifta, moraš proslediti ako liftHeight nije dostupan
+ // visina lifta, moraš proslediti ako liftHeight nije dostupan
     y0 = liftY0 + liftOffsetY;       // donja granica osobe prati lift
     y1 = y0 + height;                    // gornja granica ostaje ista u odnosu na donju
 

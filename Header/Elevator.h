@@ -13,7 +13,7 @@ private:
     vector<GLuint> floorVBOs;
 
     GLuint liftVAO, liftVBO;
-    float liftX0, liftX1, liftY0, liftY1;
+    float liftX0, liftX1, liftY0;
     float liftWidth, liftHeight;
     int liftFloor;
     float liftSpeed;
@@ -32,6 +32,8 @@ private:
     GLuint texClosed;
     GLuint texOpened;
 
+    
+
 
 public:
     Elevator(int floors = 9, int startFloor = 2, float x0 = 0.75f, float width = 0.15f);
@@ -47,7 +49,6 @@ public:
     float getLiftX0() { return liftX0; }
     float getLiftX1() { return liftX1; }
     float getLiftY0() { return liftY0; }
-    float getLiftY1() { return liftY1; }
     bool isDoorsOpen() { return doorsOpen; }
     float getDoorOpenTime() const { return doorOpenTime; }
     float getDoorDuration() const { return doorDuration; }
