@@ -89,24 +89,34 @@ void Elevator::drawLift(GLuint shader) {
     glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
 }
-void Elevator::callLift(int floor) {
-    // Ako je lift na tom spratu i vrata nisu otvorena
-    if (floor == liftFloor) {
+void Elevator::callLift(int floor)
+{
+    float targetY = -1.0f + floor * floorSpacing;
+
+    // Ako je ve? na putu, samo dodaj na kraj
+    if (fabs(liftY0 - (-1.0f + liftFloor * floorSpacing)) > 0.001f)
+    {
+        if (std::find(targetFloors.begin(), targetFloors.end(), floor) == targetFloors.end())
+            targetFloors.push_back(floor);
+        return;
+    }
+
+    // Ako je lift vec na tom spratu
+    if (fabs(liftY0 - targetY) < 0.001f)
+    {
         if (!doorsOpen) {
             doorsOpen = true;
             doorOpenTime = (float)glfwGetTime();
             doorDuration = 5.0f;
             doorExtended = false;
         }
-        // Ako su vrata ve? otvorena, ne diraj ništa
-        return; // ne dodaj u targetFloors
+        return;
     }
 
-    // Ako sprat još nije u listi ciljeva
-    if (std::find(targetFloors.begin(), targetFloors.end(), floor) == targetFloors.end()) {
+    if (std::find(targetFloors.begin(), targetFloors.end(), floor) == targetFloors.end())
         targetFloors.push_back(floor);
-    }
 }
+
 void Elevator::updateLift(PanelGrid& panelGrid, bool personInLift)
 {
     float now = glfwGetTime();
