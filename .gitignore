@@ -18,3 +18,5 @@ Release/
 *.user
 *.suo
 *.cache
+
+packages/
